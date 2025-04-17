@@ -1,0 +1,9 @@
+<script type="text/javascript">
+$j(document).ready(function() {
+    $j("ul#std_information > li > a[href^='variance.html?frn=']")
+        .parent()
+        .after(
+            $j('<li><a href="variances-updated.html?frn=~(studentfrn)" style="font-size: 20px; font-weight: bold; color: red; text-shadow: 2px 2px 2px black;">DEV- VARIANCES</a></li>')
+        );
+});
+</script>

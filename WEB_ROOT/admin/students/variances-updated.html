@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <title>Variance</title>
+    <!-- required scripts -->
+    ~[wc:commonscripts]
+    <!-- Required style sheets: screen.css, and print.css -->
+    <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+    <link href="/images/css/print.css" rel="stylesheet" media="print">
+    <script src="/scripts/tlistCustomization.js"></script>
+    <style>
+        .deny_comment {
+            width: 250px;
+            height: 75px;
+        }
+
+        .revoke_comment {
+            width: 250px;
+            height: 75px;
+        }
+
+        .Status {
+            width: 100px;
+        }
+
+        .grant_reason {
+            width: 100px;
+        }
+
+        .deny_reason {
+            width: 100px;
+        }
+
+        .revoke_reason {
+            width: 100px;
+        }
+
+        .school_year {
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    ~[wc:admin_header_frame_css]
+    <!-- breadcrumb start -->
+    <a href="/admin/home.html" target="_top">Start Page</a> &gt; <a
+        href="/admin/students/home.html?selectstudent=nosearch" target="_top">Student Selection</a> &gt; Variance
+    <!-- breadcrumb end -->
+    ~[wc:admin_navigation_frame_css]
+    <!-- start of main menu and content -->
+    ~[wc:title_student_begin_css]Variance~[wc:title_student_end_css]
+    <!-- start of tabs -->
+    ~[SetPostValue:repType=v]
+    <!-- end of tabs -->
+    <h1 style="color: red; font-weight: bold; text-shadow: 2px 2px 4px #000;">DEV: Variances</h1>
+    <form action="/~[self.page]?frn=~(studentfrn)&changesSaved=true" method="POST">
+        <!-- start of content area -->
+        ~[if.~(gpv.changesSaved)=true]<div class="feedback-confirm">~[text:psx.common.changes_recorded]</div>[/if]
+        <div class="box-round">
+            <table border="0" cellspacing="0" cellpadding="4">
+                <tr class="~[evenoddrow]">
+                    <td class="bold">Variance Icon</td>
+                    <td><select name="[students]variance_icon">
+                            <option value="">No</option>
+                            <option value="Y">Yes</option>
+                        </select></td>
+                    <td><img src="/images/variance1.gif"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="box-round">
+            ~[tlist_child:STUDENTS.U_students_extension.U_variance;displaycols:Status,school_year,School,grant_reason,variance_comment,revoke_reason,last_day;fieldNames:Variance
+            Status,School Year,School,Grant Reason,Comment, Reason for Revocation, End Date;type:html]
+            <script>
+                var InstValues = {};
+                InstValues['Granted'] = 'Granted';
+                InstValues['Denied'] = 'Denied';
+                InstValues['Revoked'] = 'Revoked';
+                InstValues['NoLongerAtSchool'] = 'NoLongerAtSchool';
+                tlistText2DropDown('Status', InstValues);
+                tlistText2StaticTextAllowNew('school_year');
+                // Dynamically populate the School dropdown using tlist_sql
+                tlistText2DropDownValNamePair('School', [
+                    ~[tlist_sql;
+                    SELECT 
+                        ID, 
+                        NAME 
+                    FROM 
+                        SCHOOLS 
+                    ORDER BY 
+                        NAME;
+                    ]
+                    ['~(ID;t)', '~(NAME;t)'],
+                    [/tlist_sql]
+                ]);
+                var InstValues = [];
+                InstValues.push(['1', 'Not Granted']);
+                InstValues.push(['A', 'Final Year would like to finish with current school']);
+                InstValues.push(['B', 'Sibling at this school']);
+                InstValues.push(['C', 'Physically Closer to home']);
+                InstValues.push(['O', 'Other Reasoning See Comment']);
+                tlistText2DropDownValNamePair('grant_reason', InstValues);
+                var InstValues = [];
+                InstValues.push(['1', 'Not Denied']);
+                InstValues.push(['A', 'Final Year would like to finish with current school']);
+                InstValues.push(['B', 'Sibling at this school']);
+                InstValues.push(['C', 'Physically Closer to home']);
+                tlistText2StaticTextAllowNew('variance_comment');
+                var InstValues = [];
+                InstValues.push(['1', 'Not Revoked']);
+                InstValues.push(['Attendance', 'Fell below 97% attendance']);
+                InstValues.push(['Discipline', 'Disciplinary actions']);
+                tlistText2DropDownValNamePair('revoke_reason', InstValues);
+                tlistText2StaticTextAllowNew('last_day');
+            </script>
+            <div class="button-row"><input type="hidden" name="ac" value="prim">~[submitbutton]</div>
+        </div>
+    </form>
+    <!-- end of content area -->
+    ~[wc:admin_footer_frame_css]
+</body>
+
+</html>
