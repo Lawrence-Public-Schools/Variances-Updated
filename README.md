@@ -1,3 +1,5 @@
+> 📌 As of 5/1/25, we are waiting for Logan to edit how the database is set up. Currently, the variance is being saved via the school name instead of the school ID. This is causing issues with the dropdowns in PowerSchool. Once the database is set up correctly, we will be able to use the school ID instead of the name.
+
 ## Understanding `tlist_sql` and `tlistText2DropDownValNamePair` in PowerSchool
 
 PowerSchool uses a custom scripting language to dynamically generate dropdowns and other elements on its pages. Here's a simple explanation of how the `tlist_sql` and `tlistText2DropDownValNamePair` work:
